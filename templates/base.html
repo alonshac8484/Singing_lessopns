@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Voice Lessons{% endblock %}</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+    h1 { font-size: 1.5rem; }
+    .week { margin-bottom: 1.5rem; }
+    .slot { display: flex; justify-content: space-between; align-items: center; padding: .6rem .8rem; border: 1px solid #ddd; border-radius: 6px; margin-bottom: .5rem; }
+    .slot a { text-decoration: none; background: #222; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .9rem; }
+    form p { margin-bottom: .8rem; }
+    label { display: block; font-weight: 600; margin-bottom: .2rem; }
+    input, textarea { width: 100%; padding: .4rem; box-sizing: border-box; }
+    button { background: #222; color: #fff; border: 0; padding: .6rem 1.2rem; border-radius: 4px; cursor: pointer; }
+    .errorlist { color: #b00020; list-style: none; padding: 0; }
+    .empty { color: #666; }
+  </style>
+</head>
+<body>
+  <h1><a href="{% url 'bookings:slot_list' %}" style="color:inherit;text-decoration:none;">Voice Lessons</a></h1>
+  {% block content %}{% endblock %}
+</body>
+</html>

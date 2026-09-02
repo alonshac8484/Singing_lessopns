@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <p><a href="{% url 'bookings:slot_list' %}">&larr; Back to slots</a></p>
+  <h2>{{ slot.date|date:"D, M j" }} &middot; {{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <p>
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {{ field.errors }}
+      </p>
+    {% endfor %}
+    <button type="submit">Request this slot</button>
+  </form>
+{% endblock %}

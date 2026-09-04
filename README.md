@@ -69,7 +69,13 @@ python manage.py test
 2. In Render, create a new **Blueprint** from this repo — it picks up
    `render.yaml`, which provisions a free Postgres database and a web
    service.
-3. In the Render dashboard, set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`,
-   and `GOOGLE_REFRESH_TOKEN` (marked `sync: false` in `render.yaml`, so
-   Render will prompt for them).
+3. Render will prompt for the env vars marked `sync: false` in
+   `render.yaml` before the first deploy:
+   - `DJANGO_SUPERUSER_USERNAME` / `DJANGO_SUPERUSER_EMAIL` /
+     `DJANGO_SUPERUSER_PASSWORD` — creates your admin login on first deploy
+     (the free plan has no shell access, so this is how you get into
+     `/admin/` the first time; change the password there once logged in).
+   - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` / `GOOGLE_REFRESH_TOKEN` —
+     can be left blank for now and filled in later once you've done the
+     Google Calendar setup above; calendar sync is simply skipped until set.
 4. Every push to `main` auto-deploys.

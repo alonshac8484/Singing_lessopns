@@ -7,7 +7,7 @@ services:
     name: singing-lessons
     runtime: python
     plan: free
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py ensure_superuser"
     startCommand: "gunicorn singing_lessons.wsgi"
     envVars:
       - key: SECRET_KEY
@@ -28,3 +28,9 @@ services:
         sync: false
       - key: GOOGLE_CALENDAR_ID
         value: primary
+      - key: DJANGO_SUPERUSER_USERNAME
+        sync: false
+      - key: DJANGO_SUPERUSER_EMAIL
+        sync: false
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false

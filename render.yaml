@@ -29,7 +29,7 @@ services:
       - key: GOOGLE_REFRESH_TOKEN
         sync: false
       - key: GOOGLE_CALENDAR_ID
-        value: primary
+        value: ba48d6f45332978b862ba601d50a10c9b57b7cf6c0085c2b90c7c6f793558d4c@group.calendar.google.com
       - key: DJANGO_SUPERUSER_USERNAME
         sync: false
       - key: DJANGO_SUPERUSER_EMAIL

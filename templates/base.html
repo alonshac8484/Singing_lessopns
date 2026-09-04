@@ -5,28 +5,286 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{% trans "Voice Lessons" %}{% endblock %}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap">
   <style>
-    body { font-family: -apple-system, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; color: #222; }
-    h1 { font-size: 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    h1 a { color: inherit; text-decoration: none; }
-    .lang-switch { display: flex; gap: .4rem; font-size: .8rem; }
+    :root {
+      --bg: #fdf8f4;
+      --surface: #ffffff;
+      --surface-alt: #fff3ef;
+      --ink: #2b2130;
+      --ink-soft: #6b5b6e;
+      --ink-faint: #a898a6;
+      --line: #f0dfe0;
+      --accent: #e4577a;
+      --accent-ink: #ffffff;
+      --accent-wash: #fce6ea;
+      --secondary: #8b7fd9;
+      --secondary-wash: #ece9fb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    h1, h2, h3 { font-family: 'Sora', 'Work Sans', sans-serif; color: var(--ink); margin: 0; }
+
+    a { color: var(--accent); }
+
+    /* Header */
+    header.site {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand-mark {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.7rem;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex: none;
+    }
+
+    .brand-name { font-size: 1.3rem; font-weight: 700; }
+
+    .lang-switch { display: flex; gap: 0.4rem; }
     .lang-switch form { display: inline; }
-    .lang-switch button { background: none; border: 1px solid #ccc; color: #444; padding: .2rem .6rem; border-radius: 4px; cursor: pointer; font-size: .8rem; }
-    .lang-switch button[disabled] { background: #222; color: #fff; border-color: #222; cursor: default; }
-    .week { margin-bottom: 1.5rem; }
-    .slot { display: flex; justify-content: space-between; align-items: center; padding: .6rem .8rem; border: 1px solid #ddd; border-radius: 6px; margin-bottom: .5rem; }
-    .slot a { text-decoration: none; background: #222; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .9rem; }
-    form p { margin-bottom: .8rem; }
-    label { display: block; font-weight: 600; margin-bottom: .2rem; }
-    input, textarea { width: 100%; padding: .4rem; box-sizing: border-box; }
-    button { background: #222; color: #fff; border: 0; padding: .6rem 1.2rem; border-radius: 4px; cursor: pointer; }
-    .errorlist { color: #b00020; list-style: none; padding: 0; }
-    .empty { color: #666; }
+
+    .lang-switch button {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .lang-switch button[disabled] {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+      cursor: default;
+    }
+
+    /* Buttons shared */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 0;
+      border-radius: 999px;
+      padding: 0.65rem 1.5rem;
+      background: var(--accent);
+      color: var(--accent-ink);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:hover { filter: brightness(1.06); }
+
+    /* Slot list */
+    .intro { color: var(--ink-soft); max-width: 52ch; margin: 0 0 2rem; }
+
+    .week { margin-bottom: 2.2rem; }
+
+    .week-label {
+      display: inline-block;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--secondary);
+      background: var(--secondary-wash);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 0.9rem;
+    }
+
+    .slot-grid { display: grid; gap: 0.75rem; }
+
+    .slot-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 0.9rem 1.1rem;
+    }
+
+    .slot-date {
+      flex: none;
+      width: 3.4rem;
+      text-align: center;
+      background: var(--surface-alt);
+      border-radius: 0.7rem;
+      padding: 0.4rem 0.2rem;
+    }
+
+    .slot-date .day {
+      display: block;
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+
+    .slot-date .weekday {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .slot-info { flex: 1; min-width: 0; }
+    .slot-time { font-weight: 600; }
+    .slot-month { color: var(--ink-soft); font-size: 0.88rem; }
+
+    .empty {
+      background: var(--surface);
+      border: 1px dashed var(--line);
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      color: var(--ink-soft);
+    }
+
+    /* Form card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 1.2rem;
+      padding: 1.75rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      text-decoration: none;
+      margin-bottom: 1.1rem;
+    }
+
+    .slot-heading {
+      font-size: 1.4rem;
+      margin-bottom: 1.4rem;
+    }
+
+    form p { margin: 0 0 1.1rem; }
+    form p:last-of-type { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 0.35rem;
+      color: var(--ink-soft);
+    }
+
+    input, textarea {
+      width: 100%;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 0.65rem;
+      padding: 0.6rem 0.75rem;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-wash);
+    }
+
+    textarea { resize: vertical; min-height: 4.5rem; }
+
+    .btn-submit {
+      margin-top: 0.4rem;
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 0;
+      border-radius: 999px;
+      padding: 0.7rem 1.6rem;
+      background: var(--accent);
+      color: var(--accent-ink);
+      cursor: pointer;
+    }
+
+    .errorlist {
+      color: var(--accent);
+      list-style: none;
+      padding: 0;
+      margin: 0.3rem 0 0;
+      font-size: 0.85rem;
+    }
+
+    /* Confirmation */
+    .confirm-card {
+      text-align: center;
+      padding: 2.5rem 1.75rem;
+    }
+
+    .confirm-icon {
+      width: 3.2rem;
+      height: 3.2rem;
+      margin: 0 auto 1.1rem;
+      border-radius: 50%;
+      background: var(--accent-wash);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .confirm-card p { max-width: 42ch; margin: 0 auto 0.9rem; color: var(--ink-soft); }
+    .confirm-card p:last-of-type { margin-bottom: 1.4rem; }
   </style>
 </head>
 <body>
-  <h1>
-    <a href="{% url 'bookings:slot_list' %}">{% trans "Voice Lessons" %}</a>
+  <header class="site">
+    <a class="brand" href="{% url 'bookings:slot_list' %}">
+      <span class="brand-mark" aria-hidden="true">&#9835;</span>
+      <span class="brand-name">{% trans "Voice Lessons" %}</span>
+    </a>
     <span class="lang-switch">
       {% get_current_language as CURRENT_LANGUAGE %}
       {% for lang_code, lang_name in LANGUAGES %}
@@ -38,7 +296,7 @@
         </form>
       {% endfor %}
     </span>
-  </h1>
+  </header>
   {% block content %}{% endblock %}
 </body>
 </html>

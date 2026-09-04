@@ -1,18 +1,27 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-  <p>{% trans "Pick an available lesson slot below to request a booking. Your teacher will confirm shortly after." %}</p>
+  <p class="intro">{% trans "Pick an available lesson slot below to request a booking. Your teacher will confirm shortly after." %}</p>
 
   {% if weeks %}
     {% for week_start, slots in weeks %}
       <div class="week">
-        <h2>{% blocktrans with week_date=week_start|date:"M j, Y" %}Week of {{ week_date }}{% endblocktrans %}</h2>
-        {% for slot in slots %}
-          <div class="slot">
-            <span>{{ slot.date|date:"D, M j" }} &middot; {{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}</span>
-            <a href="{% url 'bookings:book_slot' slot.id %}">{% trans "Request" %}</a>
-          </div>
-        {% endfor %}
+        <span class="week-label">{% blocktrans with week_date=week_start|date:"M j, Y" %}Week of {{ week_date }}{% endblocktrans %}</span>
+        <div class="slot-grid">
+          {% for slot in slots %}
+            <div class="slot-card">
+              <div class="slot-date">
+                <span class="day">{{ slot.date|date:"d" }}</span>
+                <span class="weekday">{{ slot.date|date:"D" }}</span>
+              </div>
+              <div class="slot-info">
+                <div class="slot-time">{{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}</div>
+                <div class="slot-month">{{ slot.date|date:"F Y" }}</div>
+              </div>
+              <a class="btn" href="{% url 'bookings:book_slot' slot.id %}">{% trans "Request" %}</a>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     {% endfor %}
   {% else %}

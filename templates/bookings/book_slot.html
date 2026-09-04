@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-  <p><a href="{% url 'bookings:slot_list' %}">&larr; {% trans "Back to slots" %}</a></p>
-  <h2>{{ slot.date|date:"D, M j" }} &middot; {{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}</h2>
+  <a class="back-link" href="{% url 'bookings:slot_list' %}">{% if LANGUAGE_BIDI %}&rarr;{% else %}&larr;{% endif %} {% trans "Back to slots" %}</a>
+  <div class="card">
+    <h2 class="slot-heading">{{ slot.date|date:"D, M j" }} &middot; {{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}</h2>
 
-  <form method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    {% for field in form %}
-      <p>
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-        {{ field.errors }}
-      </p>
-    {% endfor %}
-    <button type="submit">{% trans "Request this slot" %}</button>
-  </form>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <p>
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {{ field.errors }}
+        </p>
+      {% endfor %}
+      <button type="submit" class="btn-submit">{% trans "Request this slot" %}</button>
+    </form>
+  </div>
 {% endblock %}

@@ -1,12 +1,18 @@
+{% load i18n %}
 <!doctype html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Voice Lessons{% endblock %}</title>
+  <title>{% block title %}{% trans "Voice Lessons" %}{% endblock %}</title>
   <style>
     body { font-family: -apple-system, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; color: #222; }
-    h1 { font-size: 1.5rem; }
+    h1 { font-size: 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    h1 a { color: inherit; text-decoration: none; }
+    .lang-switch { display: flex; gap: .4rem; font-size: .8rem; }
+    .lang-switch form { display: inline; }
+    .lang-switch button { background: none; border: 1px solid #ccc; color: #444; padding: .2rem .6rem; border-radius: 4px; cursor: pointer; font-size: .8rem; }
+    .lang-switch button[disabled] { background: #222; color: #fff; border-color: #222; cursor: default; }
     .week { margin-bottom: 1.5rem; }
     .slot { display: flex; justify-content: space-between; align-items: center; padding: .6rem .8rem; border: 1px solid #ddd; border-radius: 6px; margin-bottom: .5rem; }
     .slot a { text-decoration: none; background: #222; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .9rem; }
@@ -19,7 +25,20 @@
   </style>
 </head>
 <body>
-  <h1><a href="{% url 'bookings:slot_list' %}" style="color:inherit;text-decoration:none;">Voice Lessons</a></h1>
+  <h1>
+    <a href="{% url 'bookings:slot_list' %}">{% trans "Voice Lessons" %}</a>
+    <span class="lang-switch">
+      {% get_current_language as CURRENT_LANGUAGE %}
+      {% for lang_code, lang_name in LANGUAGES %}
+        <form action="{% url 'set_language' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <input type="hidden" name="language" value="{{ lang_code }}">
+          <button type="submit" {% if lang_code == CURRENT_LANGUAGE %}disabled{% endif %}>{{ lang_name }}</button>
+        </form>
+      {% endfor %}
+    </span>
+  </h1>
   {% block content %}{% endblock %}
 </body>
 </html>

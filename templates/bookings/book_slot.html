@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
-  <p><a href="{% url 'bookings:slot_list' %}">&larr; Back to slots</a></p>
+  <p><a href="{% url 'bookings:slot_list' %}">&larr; {% trans "Back to slots" %}</a></p>
   <h2>{{ slot.date|date:"D, M j" }} &middot; {{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}</h2>
 
   <form method="post">
@@ -13,6 +14,6 @@
         {{ field.errors }}
       </p>
     {% endfor %}
-    <button type="submit">Request this slot</button>
+    <button type="submit">{% trans "Request this slot" %}</button>
   </form>
 {% endblock %}

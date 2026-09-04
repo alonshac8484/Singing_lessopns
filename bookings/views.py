@@ -3,6 +3,7 @@ import datetime
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from .forms import BookingRequestForm
 from .models import BookingRequest, LessonSlot
@@ -26,7 +27,7 @@ def book_slot(request, slot_id):
             with transaction.atomic():
                 locked_slot = LessonSlot.objects.select_for_update().get(id=slot.id)
                 if locked_slot.status != LessonSlot.Status.OPEN:
-                    form.add_error(None, "Sorry, this slot was just taken. Please pick another.")
+                    form.add_error(None, _("Sorry, this slot was just taken. Please pick another."))
                 else:
                     booking = form.save(commit=False)
                     booking.slot = locked_slot

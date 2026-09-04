@@ -1,0 +1,64 @@
+# Hebrew translations for the Singing Lessons Booking app.
+msgid ""
+msgstr ""
+"Project-Id-Version: singing-lessons-booking\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-04 23:58+0300\n"
+"PO-Revision-Date: 2026-09-04 23:58+0300\n"
+"Last-Translator: \n"
+"Language-Team: Hebrew\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % "
+"1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
+
+msgid "Student name"
+msgstr "שם התלמיד/ה"
+
+msgid "Student email"
+msgstr "אימייל התלמיד/ה"
+
+msgid "Student phone"
+msgstr "טלפון התלמיד/ה"
+
+msgid "Message"
+msgstr "הודעה"
+
+msgid "Sorry, this slot was just taken. Please pick another."
+msgstr "מצטערים, המשבצת הזו נתפסה הרגע. אנא בחרו משבצת אחרת."
+
+msgid "Voice Lessons"
+msgstr "שיעורי שירה"
+
+msgid "Back to slots"
+msgstr "חזרה למשבצות"
+
+msgid "Request this slot"
+msgstr "בקשה למשבצת זו"
+
+#, python-format
+msgid ""
+"Thanks, %(name)s! Your request for %(slot_date)s at %(slot_time)s has been "
+"submitted."
+msgstr "תודה, %(name)s! הבקשה שלך ל-%(slot_date)s בשעה %(slot_time)s נשלחה."
+
+#, python-format
+msgid "Your teacher will review it and confirm by email at %(email)s."
+msgstr "המורה יבדוק את הבקשה ויאשר אותה במייל לכתובת %(email)s."
+
+msgid ""
+"Pick an available lesson slot below to request a booking. Your teacher will "
+"confirm shortly after."
+msgstr "בחרו משבצת שיעור פנויה למטה כדי לבקש הזמנה. המורה יאשר בקרוב."
+
+#, python-format
+msgid "Week of %(week_date)s"
+msgstr "שבוע של %(week_date)s"
+
+msgid "Request"
+msgstr "בקשה"
+
+msgid "No open slots right now — check back soon."
+msgstr "אין כרגע משבצות פנויות — נסו שוב בקרוב."

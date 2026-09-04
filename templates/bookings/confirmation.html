@@ -1,8 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
-  <p>Thanks, {{ booking.student_name }}! Your request for
-    {{ booking.slot.date|date:"D, M j" }} at {{ booking.slot.start_time|time:"H:i" }}
-    has been submitted.</p>
-  <p>Your teacher will review it and confirm by email at {{ booking.student_email }}.</p>
-  <p><a href="{% url 'bookings:slot_list' %}">&larr; Back to slots</a></p>
+  <p>{% blocktrans with name=booking.student_name slot_date=booking.slot.date|date:"D, M j" slot_time=booking.slot.start_time|time:"H:i" %}Thanks, {{ name }}! Your request for {{ slot_date }} at {{ slot_time }} has been submitted.{% endblocktrans %}</p>
+  <p>{% blocktrans with email=booking.student_email %}Your teacher will review it and confirm by email at {{ email }}.{% endblocktrans %}</p>
+  <p><a href="{% url 'bookings:slot_list' %}">&larr; {% trans "Back to slots" %}</a></p>
 {% endblock %}

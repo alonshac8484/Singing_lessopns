@@ -130,7 +130,9 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@example.com")
 
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'bookings:slot_list'
+LOGOUT_REDIRECT_URL = 'bookings:slot_list'
 
 # Ensure unhandled request errors are printed to stdout (visible in Render's
 # logs) even with DEBUG=False, where Django's default logging only emails

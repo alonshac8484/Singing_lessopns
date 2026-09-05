@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -27,6 +28,9 @@ class BookingRequest(models.Model):
         REJECTED = "rejected", "Rejected"
 
     slot = models.ForeignKey(LessonSlot, on_delete=models.CASCADE, related_name="requests")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="bookings"
+    )
     student_name = models.CharField(max_length=200)
     student_email = models.EmailField()
     student_phone = models.CharField(max_length=30, blank=True)

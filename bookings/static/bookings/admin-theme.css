@@ -59,8 +59,8 @@ html:root {
   --button-fg: #241c12;
   --button-bg: #c9a063;
   --button-hover-bg: #b78d4f;
-  --default-button-bg: #e6d7b8;
-  --default-button-hover-bg: #d9c69f;
+  --default-button-bg: #c9a063;
+  --default-button-hover-bg: #b78d4f;
   --close-button-bg: #e6d7b8;
   --close-button-hover-bg: #d9c69f;
   --delete-button-bg: #b23b2e;
@@ -114,8 +114,8 @@ html:root {
     --button-fg: #171009;
     --button-bg: #c9a063;
     --button-hover-bg: #dcae70;
-    --default-button-bg: #241c12;
-    --default-button-hover-bg: #332818;
+    --default-button-bg: #c9a063;
+    --default-button-hover-bg: #dcae70;
     --close-button-bg: #241c12;
     --close-button-hover-bg: #332818;
     --delete-button-bg: #8a3a34;
@@ -167,8 +167,8 @@ html[data-theme="dark"]:root {
   --button-fg: #171009;
   --button-bg: #c9a063;
   --button-hover-bg: #dcae70;
-  --default-button-bg: #241c12;
-  --default-button-hover-bg: #332818;
+  --default-button-bg: #c9a063;
+  --default-button-hover-bg: #dcae70;
   --close-button-bg: #241c12;
   --close-button-hover-bg: #332818;
   --delete-button-bg: #8a3a34;

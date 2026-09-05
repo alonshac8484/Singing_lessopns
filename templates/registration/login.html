@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Log in" %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'bookings:slot_list' %}">{% if LANGUAGE_BIDI %}&rarr;{% else %}&larr;{% endif %} {% trans "Back to slots" %}</a>
+  <div class="card">
+    <h2 class="slot-heading">{% trans "Log in" %}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <p>
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {{ field.errors }}
+        </p>
+      {% endfor %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit" class="btn-submit">{% trans "Log in" %}</button>
+    </form>
+    <p class="auth-switch">{% trans "Don't have an account?" %} <a href="{% url 'bookings:signup' %}{% if next %}?next={{ next }}{% endif %}">{% trans "Sign up" %}</a></p>
+  </div>
+{% endblock %}

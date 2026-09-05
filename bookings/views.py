@@ -1,11 +1,13 @@
 import datetime
 
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from .forms import BookingRequestForm
+from .forms import BookingRequestForm, SignUpForm
 from .models import BookingRequest, LessonSlot
 
 
@@ -18,6 +20,7 @@ def slot_list(request):
     return render(request, "bookings/slot_list.html", {"weeks": sorted(weeks.items())})
 
 
+@login_required
 def book_slot(request, slot_id):
     slot = get_object_or_404(LessonSlot, id=slot_id)
 
@@ -31,6 +34,7 @@ def book_slot(request, slot_id):
                 else:
                     booking = form.save(commit=False)
                     booking.slot = locked_slot
+                    booking.user = request.user
                     booking.save()
                     locked_slot.status = LessonSlot.Status.PENDING
                     locked_slot.save()
@@ -40,10 +44,27 @@ def book_slot(request, slot_id):
     if slot.status != LessonSlot.Status.OPEN:
         return redirect(reverse("bookings:slot_list"))
 
-    form = BookingRequestForm()
+    initial = {
+        "student_name": request.user.get_full_name() or request.user.username,
+        "student_email": request.user.email,
+    }
+    form = BookingRequestForm(initial=initial)
     return render(request, "bookings/book_slot.html", {"slot": slot, "form": form})
 
 
 def confirmation(request, booking_id):
     booking = get_object_or_404(BookingRequest, id=booking_id)
     return render(request, "bookings/confirmation.html", {"booking": booking})
+
+
+def signup(request):
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            next_url = request.POST.get("next") or request.GET.get("next") or reverse("bookings:slot_list")
+            return redirect(next_url)
+    else:
+        form = SignUpForm()
+    return render(request, "registration/signup.html", {"form": form})

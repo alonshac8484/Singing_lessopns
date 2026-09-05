@@ -2,6 +2,7 @@ import datetime
 from unittest.mock import patch
 
 from django.contrib.admin.sites import AdminSite
+from django.contrib.auth.models import User
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import RequestFactory, TestCase
 
@@ -24,9 +25,14 @@ def make_slot():
     )
 
 
+def make_user(username="alice"):
+    return User.objects.create_user(username=username, password="testpass123", email=f"{username}@example.com")
+
+
 class BookingFlowTests(TestCase):
     def test_requesting_a_slot_marks_it_pending_and_hides_it(self):
         slot = make_slot()
+        self.client.force_login(make_user())
         response = self.client.post(
             f"/slots/{slot.id}/book/",
             {
@@ -41,6 +47,7 @@ class BookingFlowTests(TestCase):
         slot.refresh_from_db()
         self.assertEqual(slot.status, LessonSlot.Status.PENDING)
         self.assertEqual(BookingRequest.objects.count(), 1)
+        self.assertEqual(BookingRequest.objects.get().user.username, "alice")
 
         list_response = self.client.get("/slots/")
         self.assertNotContains(list_response, "Request this slot")
@@ -49,6 +56,7 @@ class BookingFlowTests(TestCase):
         slot = make_slot()
         slot.status = LessonSlot.Status.PENDING
         slot.save()
+        self.client.force_login(make_user("bob"))
 
         response = self.client.post(
             f"/slots/{slot.id}/book/",
@@ -61,6 +69,24 @@ class BookingFlowTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "just taken")
+        self.assertEqual(BookingRequest.objects.count(), 0)
+
+    def test_anonymous_booking_redirects_to_login(self):
+        slot = make_slot()
+        response = self.client.post(
+            f"/slots/{slot.id}/book/",
+            {
+                "student_name": "Eve",
+                "student_email": "eve@example.com",
+                "student_phone": "",
+                "message": "",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/accounts/login/", response.url)
+
+        slot.refresh_from_db()
+        self.assertEqual(slot.status, LessonSlot.Status.OPEN)
         self.assertEqual(BookingRequest.objects.count(), 0)
 
 

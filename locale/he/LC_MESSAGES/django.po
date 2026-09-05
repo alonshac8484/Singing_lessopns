@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: singing-lessons-booking\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-04 23:58+0300\n"
+"POT-Creation-Date: 2026-09-05 06:44+0000\n"
 "PO-Revision-Date: 2026-09-04 23:58+0300\n"
 "Last-Translator: \n"
 "Language-Team: Hebrew\n"
@@ -14,51 +14,100 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % "
 "1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
 
+#: bookings/forms.py:10
+msgid "Email"
+msgstr "אימייל"
+
+#: bookings/forms.py:16
+msgid "Username"
+msgstr "שם משתמש"
+
+#: bookings/forms.py:28
 msgid "Student name"
 msgstr "שם התלמיד/ה"
 
+#: bookings/forms.py:29
 msgid "Student email"
 msgstr "אימייל התלמיד/ה"
 
+#: bookings/forms.py:30
 msgid "Student phone"
 msgstr "טלפון התלמיד/ה"
 
+#: bookings/forms.py:31
 msgid "Message"
 msgstr "הודעה"
 
+#: bookings/views.py:33
 msgid "Sorry, this slot was just taken. Please pick another."
 msgstr "מצטערים, המשבצת הזו נתפסה הרגע. אנא בחרו משבצת אחרת."
 
-msgid "Voice Lessons"
-msgstr "שיעורי שירה"
+#: templates/base.html:347
+msgid "Log out"
+msgstr "התנתקות"
 
+#: templates/base.html:350 templates/registration/login.html:3
+#: templates/registration/login.html:7 templates/registration/login.html:20
+#: templates/registration/signup.html:23
+msgid "Log in"
+msgstr "התחברות"
+
+#: templates/base.html:351 templates/registration/login.html:22
+#: templates/registration/signup.html:3 templates/registration/signup.html:21
+msgid "Sign up"
+msgstr "הרשמה"
+
+#: templates/bookings/book_slot.html:4 templates/bookings/confirmation.html:8
+#: templates/registration/login.html:5 templates/registration/signup.html:5
 msgid "Back to slots"
 msgstr "חזרה למשבצות"
 
+#: templates/bookings/book_slot.html:18
 msgid "Request this slot"
 msgstr "בקשה למשבצת זו"
 
+#: templates/bookings/confirmation.html:6
 #, python-format
 msgid ""
 "Thanks, %(name)s! Your request for %(slot_date)s at %(slot_time)s has been "
 "submitted."
 msgstr "תודה, %(name)s! הבקשה שלך ל-%(slot_date)s בשעה %(slot_time)s נשלחה."
 
+#: templates/bookings/confirmation.html:7
 #, python-format
 msgid "Your teacher will review it and confirm by email at %(email)s."
 msgstr "המורה יבדוק את הבקשה ויאשר אותה במייל לכתובת %(email)s."
 
+#: templates/bookings/slot_list.html:4
 msgid ""
 "Pick an available lesson slot below to request a booking. Your teacher will "
 "confirm shortly after."
 msgstr "בחרו משבצת שיעור פנויה למטה כדי לבקש הזמנה. המורה יאשר בקרוב."
 
+#: templates/bookings/slot_list.html:9
 #, python-format
 msgid "Week of %(week_date)s"
 msgstr "שבוע של %(week_date)s"
 
+#: templates/bookings/slot_list.html:21
 msgid "Request"
 msgstr "בקשה"
 
+#: templates/bookings/slot_list.html:28
 msgid "No open slots right now — check back soon."
 msgstr "אין כרגע משבצות פנויות — נסו שוב בקרוב."
+
+#: templates/registration/login.html:22
+msgid "Don't have an account?"
+msgstr "אין לך חשבון?"
+
+#: templates/registration/signup.html:7
+msgid "Create your account"
+msgstr "יצירת חשבון"
+
+#: templates/registration/signup.html:23
+msgid "Already have an account?"
+msgstr "כבר יש לך חשבון?"
+
+#~ msgid "Voice Lessons"
+#~ msgstr "שיעורי שירה"

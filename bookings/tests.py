@@ -1,10 +1,11 @@
 import datetime
+import re
 from unittest.mock import patch
 
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
 from django.contrib.messages.storage.fallback import FallbackStorage
-from django.test import RequestFactory, TestCase
+from django.test import Client, RequestFactory, TestCase
 
 from .admin import BookingRequestAdmin
 from .models import BookingRequest, LessonSlot
@@ -126,3 +127,54 @@ class AdminApprovalTests(TestCase):
         self.slot.refresh_from_db()
         self.assertEqual(self.booking.status, BookingRequest.Status.REJECTED)
         self.assertEqual(self.slot.status, LessonSlot.Status.OPEN)
+
+
+class CsrfBehindProxyTests(TestCase):
+    """
+    Render terminates TLS at its own proxy and forwards requests to this app
+    over plain HTTP. Without SECURE_PROXY_SSL_HEADER, request.is_secure()
+    comes out False, and Django's CSRF middleware then builds the "expected
+    origin" for its Origin-header check as http://... while real browsers
+    send Origin: https://..., rejecting every submission with a 403 whenever
+    the browser includes an Origin header. Client(enforce_csrf_checks=True)
+    exercises the real CSRF middleware instead of the test client's default
+    bypass, and HTTP_X_FORWARDED_PROTO simulates what Render's proxy sends.
+    """
+
+    def test_signup_succeeds_with_https_origin_behind_proxy(self):
+        # Deliberately NOT using Client(secure=True): that fakes a secure
+        # connection at the WSGI level and would make request.is_secure()
+        # True regardless of SECURE_PROXY_SSL_HEADER, defeating the point of
+        # this test. The connection here is nominally plain HTTP, exactly
+        # like what Render forwards internally, with only the
+        # X-Forwarded-Proto header hinting that it was HTTPS externally.
+        # A real browser always sends a Host header, which Render's proxy
+        # passes through unchanged -- Django's get_host() uses that header
+        # directly rather than reconstructing one from SERVER_NAME/PORT, so
+        # the port confusion that would otherwise happen here doesn't occur
+        # in production. Setting HTTP_HOST explicitly (the test client
+        # doesn't by default) reproduces that real condition.
+        client = Client(enforce_csrf_checks=True)
+        get_response = client.get(
+            "/slots/signup/", HTTP_X_FORWARDED_PROTO="https", HTTP_HOST="testserver"
+        )
+        csrf_token = re.search(
+            r'name="csrfmiddlewaretoken" value="([^"]+)"', get_response.content.decode()
+        ).group(1)
+
+        response = client.post(
+            "/slots/signup/",
+            {
+                "username": "proxytest",
+                "email": "proxytest@example.com",
+                "password1": "correcthorsebattery",
+                "password2": "correcthorsebattery",
+                "csrfmiddlewaretoken": csrf_token,
+            },
+            HTTP_X_FORWARDED_PROTO="https",
+            HTTP_HOST="testserver",
+            HTTP_ORIGIN="https://testserver",
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(User.objects.filter(username="proxytest").exists())

@@ -19,6 +19,15 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = [h for h in os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h]
 
 CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o]
+CSRF_TRUSTED_ORIGINS.append("https://singing-lessons.onrender.com")
+
+# Render terminates TLS at its own proxy and forwards requests to this app
+# over plain HTTP, so without this Django believes every request is
+# insecure. That breaks CSRF's Origin check: it compares the browser's real
+# `Origin: https://...` header against a same-origin guess built from
+# request.is_secure(), which was silently coming out as `http://...` and
+# rejecting otherwise-legitimate submissions (e.g. signup) as cross-origin.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition

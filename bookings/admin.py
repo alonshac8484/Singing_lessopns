@@ -5,6 +5,10 @@ from django.conf import settings
 from .models import BookingRequest, LessonSlot
 from .services.google_calendar import create_lesson_event, delete_lesson_event
 
+admin.site.site_header = "REYSOL Studios"
+admin.site.site_title = "REYSOL Studios Admin"
+admin.site.index_title = "Lesson Bookings"
+
 
 @admin.register(LessonSlot)
 class LessonSlotAdmin(admin.ModelAdmin):

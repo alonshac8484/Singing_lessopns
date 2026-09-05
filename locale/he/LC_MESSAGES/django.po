@@ -114,5 +114,49 @@ msgstr "יצירת חשבון"
 msgid "Already have an account?"
 msgstr "כבר יש לך חשבון?"
 
+#: bookings/forms.py:37
+msgid "Phone number"
+msgstr "מספר טלפון"
+
+#: bookings/forms.py:38
+msgid "Date of birth"
+msgstr "תאריך לידה"
+
+#: bookings/models.py:26
+msgid "Pending"
+msgstr "ממתין"
+
+#: bookings/models.py:27
+msgid "Approved"
+msgstr "אושר"
+
+#: bookings/models.py:28
+msgid "Rejected"
+msgstr "נדחה"
+
+#: bookings/views.py:82
+msgid "Your details have been updated."
+msgstr "הפרטים שלך עודכנו."
+
+#: templates/bookings/account.html:3
+msgid "Your account"
+msgstr "החשבון שלך"
+
+#: templates/bookings/account.html:6
+msgid "Your details"
+msgstr "הפרטים שלך"
+
+#: templates/bookings/account.html:19
+msgid "Save details"
+msgstr "שמירת פרטים"
+
+#: templates/bookings/account.html:22
+msgid "Your bookings"
+msgstr "השיעורים שלך"
+
+#: templates/bookings/account.html:35
+msgid "You haven't requested any lessons yet."
+msgstr "עדיין לא ביקשת שיעורים."
+
 #~ msgid "Voice Lessons"
 #~ msgstr "שיעורי שירה"

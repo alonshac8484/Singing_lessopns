@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
-from .forms import BookingRequestForm, SignUpForm
-from .models import BookingRequest, LessonSlot
+from .forms import BookingRequestForm, ProfileForm, SignUpForm
+from .models import BookingRequest, LessonSlot, Profile
 
 
 def slot_list(request):
@@ -70,3 +70,20 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, "registration/signup.html", {"form": form})
+
+
+@login_required
+def account(request):
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Your details have been updated."))
+            return redirect(reverse("bookings:account"))
+    else:
+        form = ProfileForm(instance=profile)
+
+    bookings = request.user.bookings.select_related("slot").all()
+    return render(request, "bookings/account.html", {"form": form, "bookings": bookings})

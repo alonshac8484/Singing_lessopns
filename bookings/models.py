@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class LessonSlot(models.Model):
@@ -23,9 +24,9 @@ class LessonSlot(models.Model):
 
 class BookingRequest(models.Model):
     class Status(models.TextChoices):
-        PENDING = "pending", "Pending"
-        APPROVED = "approved", "Approved"
-        REJECTED = "rejected", "Rejected"
+        PENDING = "pending", _("Pending")
+        APPROVED = "approved", _("Approved")
+        REJECTED = "rejected", _("Rejected")
 
     slot = models.ForeignKey(LessonSlot, on_delete=models.CASCADE, related_name="requests")
     user = models.ForeignKey(
@@ -44,3 +45,12 @@ class BookingRequest(models.Model):
 
     def __str__(self):
         return f"{self.student_name} - {self.slot} ({self.status})"
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
+    phone = models.CharField(max_length=30, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Profile for {self.user}"

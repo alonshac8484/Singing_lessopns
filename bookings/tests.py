@@ -8,7 +8,7 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import Client, RequestFactory, TestCase
 
 from .admin import BookingRequestAdmin
-from .models import BookingRequest, LessonSlot
+from .models import BookingRequest, LessonSlot, Profile
 
 
 def make_admin_request():
@@ -127,6 +127,49 @@ class AdminApprovalTests(TestCase):
         self.slot.refresh_from_db()
         self.assertEqual(self.booking.status, BookingRequest.Status.REJECTED)
         self.assertEqual(self.slot.status, LessonSlot.Status.OPEN)
+
+
+class AccountPageTests(TestCase):
+    def test_requires_login(self):
+        response = self.client.get("/slots/account/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/accounts/login/", response.url)
+
+    def test_updating_details_creates_profile_and_saves_fields(self):
+        self.client.force_login(make_user("carol"))
+        self.assertFalse(Profile.objects.filter(user__username="carol").exists())
+
+        response = self.client.post(
+            "/slots/account/",
+            {"phone": "555-1234", "date_of_birth": "1990-05-15"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        profile = Profile.objects.get(user__username="carol")
+        self.assertEqual(profile.phone, "555-1234")
+        self.assertEqual(profile.date_of_birth, datetime.date(1990, 5, 15))
+
+    def test_shows_only_the_logged_in_users_bookings(self):
+        mine = make_user("dave")
+        someone_else = make_user("erin")
+        my_slot = make_slot()
+        BookingRequest.objects.create(
+            slot=my_slot, user=mine, student_name="Dave", student_email="dave@example.com"
+        )
+        other_slot = LessonSlot.objects.create(
+            date=datetime.date.today() + datetime.timedelta(days=2),
+            start_time=datetime.time(9, 0),
+            end_time=datetime.time(10, 0),
+        )
+        BookingRequest.objects.create(
+            slot=other_slot, user=someone_else, student_name="Erin", student_email="erin@example.com"
+        )
+
+        self.client.force_login(mine)
+        response = self.client.get("/slots/account/")
+
+        self.assertContains(response, "10:00")  # my_slot's start time
+        self.assertNotContains(response, "09:00")  # other_slot's start time
 
 
 class CsrfBehindProxyTests(TestCase):

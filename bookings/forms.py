@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
-from .models import BookingRequest
+from .models import BookingRequest, Profile
 
 
 class SignUpForm(UserCreationForm):
@@ -29,4 +29,17 @@ class BookingRequestForm(forms.ModelForm):
             "student_email": _("Student email"),
             "student_phone": _("Student phone"),
             "message": _("Message"),
+        }
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["phone", "date_of_birth"]
+        widgets = {
+            "date_of_birth": forms.DateInput(attrs={"type": "date"}),
+        }
+        labels = {
+            "phone": _("Phone number"),
+            "date_of_birth": _("Date of birth"),
         }

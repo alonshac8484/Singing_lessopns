@@ -86,7 +86,15 @@
     .auth-links a:hover,
     .link-btn:hover { color: var(--accent); }
 
-    .auth-username { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.8rem; color: var(--ink); }
+    .auth-username {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.8rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .auth-username:hover { color: var(--accent); }
 
     .brand-block { text-align: center; }
 
@@ -229,6 +237,21 @@
       border-bottom: 1px solid var(--line);
     }
 
+    /* Account page */
+    .account-history-heading { margin-top: 3rem; }
+
+    .booking-status {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .booking-status--pending { color: var(--ink-soft); }
+    .booking-status--approved { color: var(--accent); }
+    .booking-status--rejected { color: var(--ink-faint); }
+
     /* Form card */
     .card {
       border-top: 1px solid var(--line);
@@ -338,7 +361,7 @@
       </span>
       <span class="auth-links">
         {% if user.is_authenticated %}
-          <span class="auth-username">{{ user.get_username }}</span>
+          <a class="auth-username" href="{% url 'bookings:account' %}">{{ user.get_username }}</a>
           <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="link-btn">{% trans "Log out" %}</button>

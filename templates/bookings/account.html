@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Your account" %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'bookings:slot_list' %}">{% if LANGUAGE_BIDI %}&rarr;{% else %}&larr;{% endif %} {% trans "Back to slots" %}</a>
+
+  <h2 class="slot-heading">{% trans "Your details" %}</h2>
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <p>
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<span class="field-help">{{ field.help_text }}</span>{% endif %}
+          {{ field.errors }}
+        </p>
+      {% endfor %}
+      <button type="submit" class="btn-submit">{% trans "Save details" %}</button>
+    </form>
+  </div>
+
+  <h2 class="slot-heading account-history-heading">{% trans "Your bookings" %}</h2>
+  {% if bookings %}
+    <div class="slot-rows">
+      {% for booking in bookings %}
+        <div class="slot-row">
+          <span class="slot-meta">
+            <span class="weekday">{{ booking.slot.date|date:"D, d" }}</span>
+            <span class="sep">&middot;</span>{{ booking.slot.start_time|time:"H:i" }}&ndash;{{ booking.slot.end_time|time:"H:i" }}
+            <span class="sep">&middot;</span>{{ booking.slot.date|date:"F Y" }}
+          </span>
+          <span class="booking-status booking-status--{{ booking.status }}">{{ booking.get_status_display }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty">{% trans "You haven't requested any lessons yet." %}</p>
+  {% endif %}
+{% endblock %}

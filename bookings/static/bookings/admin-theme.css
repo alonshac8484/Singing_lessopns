@@ -1,11 +1,133 @@
 /* REYSOL Studios admin theme — overrides Django admin's own CSS custom
    properties so every built-in component (buttons, links, filters, message
-   banners) repaints automatically. Applies regardless of the light/dark
-   toggle, since this is the studio's one brand look for its own tool. */
+   banners) repaints automatically. Light and dark get distinct REYSOL
+   palettes so the built-in theme toggle (top-left) actually does something.
 
-:root,
-html[data-theme="light"],
-html[data-theme="dark"] {
+   Every block below is qualified as "html:root" rather than plain ":root".
+   Both select the same element, but Django's own base.css also declares a
+   plain ":root" block (its stock light palette) — at equal specificity,
+   relying on load order to break the tie between two same-specificity
+   ":root" rules across stylesheets proved unreliable in testing (the
+   later-loaded stylesheet did not consistently win). "html:root" carries
+   strictly higher specificity than plain ":root", so it wins outright
+   regardless of stylesheet order. */
+
+html {
+  /* Django's admin CSS is written almost entirely in rem, so bumping the
+     root size scales type AND spacing (paddings, icons) together, which is
+     both "bigger text" and "more breathing room" from one change. */
+  font-size: 113%;
+}
+
+html:root {
+  --primary: #c9a063;
+  --primary-fg: #241c12;
+  --secondary: #ede1cc;
+  --accent: #a9803f;
+
+  --body-fg: #241c12;
+  --body-bg: #faf6ef;
+  --body-quiet-color: #6b5d47;
+  --body-loud-color: #171009;
+
+  --header-color: #241c12;
+  --header-branding-color: #9c7a3e;
+  --header-bg: #f2e6cd;
+  --header-link-color: #241c12;
+
+  --breadcrumbs-fg: #6b5d47;
+  --breadcrumbs-link-fg: #241c12;
+  --breadcrumbs-bg: #f2e6cd;
+
+  --link-fg: #9c7a3e;
+  --link-hover-color: #7d631f;
+  --link-selected-fg: #7d631f;
+
+  --hairline-color: #e6dcc8;
+  --border-color: #ddd0b5;
+
+  --error-fg: #b23b2e;
+
+  --message-success-bg: #dcefe0;
+  --message-warning-bg: #f7ecc9;
+  --message-error-bg: #f8dcd8;
+
+  --darkened-bg: #f2ead9;
+  --selected-bg: #ede1c8;
+  --selected-row: #f7ecd0;
+
+  --button-fg: #241c12;
+  --button-bg: #c9a063;
+  --button-hover-bg: #b78d4f;
+  --default-button-bg: #e6d7b8;
+  --default-button-hover-bg: #d9c69f;
+  --close-button-bg: #e6d7b8;
+  --close-button-hover-bg: #d9c69f;
+  --delete-button-bg: #b23b2e;
+  --delete-button-hover-bg: #963025;
+
+  --object-tools-fg: #241c12;
+  --object-tools-bg: #c9a063;
+  --object-tools-hover-bg: #b78d4f;
+
+  --font-family-primary: 'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:root:not([data-theme="light"]) {
+    --primary: #c9a063;
+    --primary-fg: #171009;
+    --secondary: #241c12;
+    --accent: #e4c287;
+
+    --body-fg: #f2e3c4;
+    --body-bg: #060503;
+    --body-quiet-color: #b3a184;
+    --body-loud-color: #f7ecd6;
+
+    --header-color: #f2e3c4;
+    --header-branding-color: #e4c287;
+    --header-bg: #14100c;
+    --header-link-color: #f2e3c4;
+
+    --breadcrumbs-fg: #b3a184;
+    --breadcrumbs-link-fg: #f2e3c4;
+    --breadcrumbs-bg: #14100c;
+
+    --link-fg: #d8b271;
+    --link-hover-color: #e4c287;
+    --link-selected-fg: #e4c287;
+
+    --hairline-color: #2c241a;
+    --border-color: #2c241a;
+
+    --error-fg: #e0796b;
+
+    --message-success-bg: #14301f;
+    --message-warning-bg: #3a2f14;
+    --message-error-bg: #3a1714;
+
+    --darkened-bg: #100d0a;
+    --selected-bg: #1c1610;
+    --selected-row: #241c12;
+
+    --button-fg: #171009;
+    --button-bg: #c9a063;
+    --button-hover-bg: #dcae70;
+    --default-button-bg: #241c12;
+    --default-button-hover-bg: #332818;
+    --close-button-bg: #241c12;
+    --close-button-hover-bg: #332818;
+    --delete-button-bg: #8a3a34;
+    --delete-button-hover-bg: #a8453d;
+
+    --object-tools-fg: #171009;
+    --object-tools-bg: #c9a063;
+    --object-tools-hover-bg: #dcae70;
+  }
+}
+
+html[data-theme="dark"]:root {
   --primary: #c9a063;
   --primary-fg: #171009;
   --secondary: #241c12;
@@ -55,17 +177,16 @@ html[data-theme="dark"] {
   --object-tools-fg: #171009;
   --object-tools-bg: #c9a063;
   --object-tools-hover-bg: #dcae70;
-
-  --font-family-primary: 'Work Sans', -apple-system, 'Segoe UI', sans-serif;
 }
 
 /* Staff-line texture in the header — a nod to sheet music, kept faint
-   enough to stay behind the branding text. */
+   enough to stay behind the branding text. A neutral wash works on both
+   the light and dark header background. */
 #header {
   background-image: repeating-linear-gradient(
     to bottom,
-    rgba(228, 194, 135, 0.05) 0,
-    rgba(228, 194, 135, 0.05) 1px,
+    rgba(128, 100, 40, 0.06) 0,
+    rgba(128, 100, 40, 0.06) 1px,
     transparent 1px,
     transparent 8px
   );
@@ -126,11 +247,67 @@ div.breadcrumbs {
 .login .form-row #id_password:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.25);
+  box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.3);
   border-radius: 0.5rem;
 }
 
 /* Status pills read faster than plain text in the changelist */
 .field-status {
   font-weight: 600;
+}
+
+/* --- More breathing room + friendlier form/table sizing --- */
+
+#content {
+  padding: 30px 40px;
+}
+
+.module h2, .module caption, .inline-group h2 {
+  padding: 10px 16px;
+}
+
+#changelist table thead th,
+#changelist table tbody td,
+#changelist table tbody th {
+  padding: 10px 12px;
+}
+
+.results {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--hairline-color);
+}
+
+.form-row {
+  padding: 14px 0;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=url],
+input[type=number], input[type=tel], textarea, select, .vTextField {
+  font-size: 1rem;
+  padding: 10px 12px;
+  border-radius: 0.4rem;
+}
+
+select {
+  padding: 9px 12px;
+}
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+  padding: 10px 20px;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+}
+
+.object-tools a {
+  padding: 8px 16px;
+  border-radius: 0.4rem;
+}
+
+#nav-sidebar .section {
+  padding: 10px 16px;
+}
+
+label {
+  font-size: 1rem;
 }

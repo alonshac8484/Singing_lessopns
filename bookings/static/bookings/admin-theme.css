@@ -1,0 +1,136 @@
+/* REYSOL Studios admin theme — overrides Django admin's own CSS custom
+   properties so every built-in component (buttons, links, filters, message
+   banners) repaints automatically. Applies regardless of the light/dark
+   toggle, since this is the studio's one brand look for its own tool. */
+
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  --primary: #c9a063;
+  --primary-fg: #171009;
+  --secondary: #241c12;
+  --accent: #e4c287;
+
+  --body-fg: #f2e3c4;
+  --body-bg: #060503;
+  --body-quiet-color: #b3a184;
+  --body-loud-color: #f7ecd6;
+
+  --header-color: #f2e3c4;
+  --header-branding-color: #e4c287;
+  --header-bg: #14100c;
+  --header-link-color: #f2e3c4;
+
+  --breadcrumbs-fg: #b3a184;
+  --breadcrumbs-link-fg: #f2e3c4;
+  --breadcrumbs-bg: #14100c;
+
+  --link-fg: #d8b271;
+  --link-hover-color: #e4c287;
+  --link-selected-fg: #e4c287;
+
+  --hairline-color: #2c241a;
+  --border-color: #2c241a;
+
+  --error-fg: #e0796b;
+
+  --message-success-bg: #14301f;
+  --message-warning-bg: #3a2f14;
+  --message-error-bg: #3a1714;
+
+  --darkened-bg: #100d0a;
+  --selected-bg: #1c1610;
+  --selected-row: #241c12;
+
+  --button-fg: #171009;
+  --button-bg: #c9a063;
+  --button-hover-bg: #dcae70;
+  --default-button-bg: #241c12;
+  --default-button-hover-bg: #332818;
+  --close-button-bg: #241c12;
+  --close-button-hover-bg: #332818;
+  --delete-button-bg: #8a3a34;
+  --delete-button-hover-bg: #a8453d;
+
+  --object-tools-fg: #171009;
+  --object-tools-bg: #c9a063;
+  --object-tools-hover-bg: #dcae70;
+
+  --font-family-primary: 'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Staff-line texture in the header — a nod to sheet music, kept faint
+   enough to stay behind the branding text. */
+#header {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(228, 194, 135, 0.05) 0,
+    rgba(228, 194, 135, 0.05) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+}
+
+#branding h1,
+#branding h1 a:link,
+#branding h1 a:visited {
+  font-family: 'Cinzel', 'Work Sans', serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--header-branding-color);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.admin-brand-mark {
+  width: 1.7rem;
+  height: auto;
+  flex: none;
+}
+
+/* login.css sets #header h1 a's color after this file loads; this
+   selector out-specifies it so the login page's title keeps the gold
+   branding accent instead of falling back to plain header text color. */
+.login #branding h1 a:link,
+.login #branding h1 a:visited {
+  color: var(--header-branding-color);
+}
+
+div.breadcrumbs {
+  border-top: 1px solid var(--hairline-color);
+}
+
+/* Module headers (list section titles on the index page) */
+.module h2, .module caption, .inline-group h2 {
+  background: var(--darkened-bg);
+  color: var(--body-loud-color);
+}
+
+/* Login page: the shared #branding block above already puts the mic
+   mark + wordmark in the header, which Django's login.css centers.
+   Just give the login card itself a touch more of the studio's rounded,
+   bordered look. */
+.login #container {
+  border-radius: 0.9rem;
+}
+
+.login .form-row #id_username,
+.login .form-row #id_password {
+  background: var(--body-bg);
+  color: var(--body-fg);
+  border: 1px solid var(--border-color);
+}
+
+.login .form-row #id_username:focus,
+.login .form-row #id_password:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.25);
+  border-radius: 0.5rem;
+}
+
+/* Status pills read faster than plain text in the changelist */
+.field-status {
+  font-weight: 600;
+}

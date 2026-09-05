@@ -50,7 +50,7 @@ class BookingFlowTests(TestCase):
         self.assertEqual(BookingRequest.objects.get().user.username, "alice")
 
         list_response = self.client.get("/slots/")
-        self.assertNotContains(list_response, "Request this slot")
+        self.assertNotContains(list_response, f"/slots/{slot.id}/book/")
 
     def test_double_booking_is_prevented(self):
         slot = make_slot()
@@ -68,7 +68,7 @@ class BookingFlowTests(TestCase):
             },
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "just taken")
+        self.assertTrue(response.context["form"].non_field_errors())
         self.assertEqual(BookingRequest.objects.count(), 0)
 
     def test_anonymous_booking_redirects_to_login(self):

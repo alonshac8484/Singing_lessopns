@@ -6,19 +6,20 @@
   {% if weeks %}
     {% for week_start, slots in weeks %}
       <div class="week">
-        <span class="week-label">{% blocktrans with week_date=week_start|date:"M j, Y" %}Week of {{ week_date }}{% endblocktrans %}</span>
-        <div class="slot-grid">
+        <div class="week-label">
+          <span class="rule"></span>
+          <span>{% blocktrans with week_date=week_start|date:"M j, Y" %}Week of {{ week_date }}{% endblocktrans %}</span>
+          <span class="rule"></span>
+        </div>
+        <div class="slot-rows">
           {% for slot in slots %}
-            <div class="slot-card">
-              <div class="slot-date">
-                <span class="day">{{ slot.date|date:"d" }}</span>
-                <span class="weekday">{{ slot.date|date:"D" }}</span>
-              </div>
-              <div class="slot-info">
-                <div class="slot-time">{{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}</div>
-                <div class="slot-month">{{ slot.date|date:"F Y" }}</div>
-              </div>
-              <a class="btn" href="{% url 'bookings:book_slot' slot.id %}">{% trans "Request" %}</a>
+            <div class="slot-row">
+              <span class="slot-meta">
+                <span class="weekday">{{ slot.date|date:"D" }}, {{ slot.date|date:"d" }}</span>
+                <span class="sep">&middot;</span>{{ slot.start_time|time:"H:i" }}&ndash;{{ slot.end_time|time:"H:i" }}
+                <span class="sep">&middot;</span>{{ slot.date|date:"F Y" }}
+              </span>
+              <a class="request-link" href="{% url 'bookings:book_slot' slot.id %}">{% trans "Request" %} {% if LANGUAGE_BIDI %}&larr;{% else %}&rarr;{% endif %}</a>
             </div>
           {% endfor %}
         </div>

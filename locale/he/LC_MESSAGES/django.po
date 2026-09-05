@@ -42,6 +42,11 @@ msgstr "הודעה"
 msgid "Sorry, this slot was just taken. Please pick another."
 msgstr "מצטערים, המשבצת הזו נתפסה הרגע. אנא בחרו משבצת אחרת."
 
+#: bookings/views.py:66
+#, python-format
+msgid "Account created! Welcome, %(name)s."
+msgstr "החשבון נוצר! ברוכים הבאים, %(name)s."
+
 #: templates/base.html:347
 msgid "Log out"
 msgstr "התנתקות"

@@ -5,364 +5,370 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}REYSOL Studios{% endblock %}</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Sora:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
   <style>
     :root {
-      --bg: #060503;
-      --surface: #14100c;
-      --surface-alt: #1c1610;
-      --ink: #f2e3c4;
-      --ink-soft: #b3a184;
-      --ink-faint: #776a54;
-      --line: #2c241a;
-      --accent: #c9a063;
-      --accent-strong: #e4c287;
-      --accent-ink: #171009;
-      --accent-wash: rgba(201, 160, 99, 0.14);
+      --bg: #f4efe1;
+      --ink: #2b2420;
+      --ink-soft: #6b6053;
+      --ink-faint: #a89b85;
+      --line: #ddd0b0;
+      --accent: #a33b2e;
+      --accent-strong: #7e2e23;
     }
 
     * { box-sizing: border-box; }
 
     body {
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(43, 36, 32, 0.05) 0,
+        rgba(43, 36, 32, 0.05) 1px,
+        transparent 1px,
+        transparent 27px
+      );
       color: var(--ink);
-      font-family: 'Work Sans', -apple-system, 'Segoe UI', sans-serif;
-      font-size: 16px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
       line-height: 1.6;
-      max-width: 720px;
+      max-width: 640px;
       margin: 0 auto;
       padding: 2.5rem 1.25rem 4rem;
     }
 
-    h1, h2, h3 { font-family: 'Sora', 'Work Sans', sans-serif; color: var(--ink); margin: 0; }
+    h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--ink); margin: 0; font-weight: 600; }
 
-    a { color: var(--accent-strong); }
+    a { color: var(--accent); }
 
     /* Header */
-    header.site {
+    header.site { margin-bottom: 2.75rem; }
+
+    .utility-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 2.5rem;
       flex-wrap: wrap;
+      margin-bottom: 2.25rem;
     }
 
-    .brand {
+    .lang-switch, .auth-links {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
-      text-decoration: none;
-      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
     }
 
-    .brand-mark-img {
-      width: 2.6rem;
-      height: auto;
-      flex: none;
+    .lang-switch form, .auth-links > * { display: inline; }
+
+    .lang-switch form:not(:last-child)::after,
+    .auth-links > *:not(:last-child)::after {
+      content: "\00b7";
+      margin: 0 0.5em;
+      color: var(--ink-faint);
     }
 
-    .brand-word {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.05;
-    }
-
-    .brand-name {
-      font-family: 'Cinzel', 'Sora', serif;
-      font-weight: 600;
-      font-size: 1.15rem;
-      letter-spacing: 0.06em;
-      color: var(--ink);
-    }
-
-    .brand-sub {
-      font-family: 'Cinzel', 'Sora', serif;
-      font-weight: 500;
-      font-size: 0.58rem;
-      letter-spacing: 0.32em;
-      color: var(--accent);
-      margin-top: 0.15rem;
-    }
-
-    .auth-links {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      font-size: 0.88rem;
-      color: var(--ink-soft);
-    }
-
-    .auth-links a { color: var(--ink-soft); text-decoration: none; }
-    .auth-links a:hover { color: var(--accent-strong); }
-    .auth-username { color: var(--accent-strong); font-weight: 600; }
-
-    .link-btn {
+    .lang-switch button, .auth-links a, .link-btn {
       background: none;
       border: 0;
       padding: 0;
-      font: inherit;
-      color: var(--ink-soft);
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .link-btn:hover { color: var(--accent-strong); }
-
-    .lang-switch { display: flex; gap: 0.4rem; }
-    .lang-switch form { display: inline; }
-
-    .lang-switch button {
-      font-family: 'Work Sans', sans-serif;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
       font-size: 0.8rem;
-      font-weight: 500;
-      background: transparent;
-      border: 1px solid var(--line);
       color: var(--ink-soft);
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
+      text-decoration: none;
       cursor: pointer;
     }
 
-    .lang-switch button[disabled] {
+    .lang-switch button[disabled] { color: var(--ink); cursor: default; }
+    .lang-switch button:not([disabled]):hover,
+    .auth-links a:hover,
+    .link-btn:hover { color: var(--accent); }
+
+    .auth-username { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.8rem; color: var(--ink); }
+
+    .brand-block { text-align: center; }
+
+    .brand {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand-mark { width: 1.6rem; height: auto; color: var(--ink-soft); margin-bottom: 0.6rem; }
+
+    .brand-name {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .brand-rule {
+      width: 220px;
+      max-width: 60%;
+      height: 1px;
+      background: var(--line);
+      margin: 0.9rem auto 0;
+      position: relative;
+    }
+
+    .brand-rule::before {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
       background: var(--accent);
-      color: var(--accent-ink);
-      border-color: var(--accent);
-      cursor: default;
     }
 
     /* Buttons shared */
-    .btn {
+    .btn, .btn-submit {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Work Sans', sans-serif;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.9rem;
       font-weight: 600;
-      font-size: 0.95rem;
-      border: 0;
-      border-radius: 999px;
-      padding: 0.65rem 1.5rem;
-      background: var(--accent);
-      color: var(--accent-ink);
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      padding: 0.55rem 1.4rem;
+      background: transparent;
+      color: var(--ink);
       cursor: pointer;
       text-decoration: none;
       white-space: nowrap;
     }
 
-    .btn:hover { filter: brightness(1.08); }
+    .btn:hover, .btn-submit:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Site messages */
+    .site-messages {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem;
+      text-align: center;
+    }
+
+    .site-message {
+      font-style: italic;
+      color: var(--accent);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0.85rem 0;
+    }
+
+    .site-message + .site-message { border-top: 0; }
 
     /* Slot list */
-    .intro { color: var(--ink-soft); max-width: 52ch; margin: 0 0 2rem; }
-
-    .week { margin-bottom: 2.2rem; }
-
-    .week-label {
-      display: inline-block;
-      font-family: 'Cinzel', 'Sora', serif;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: var(--accent-wash);
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      margin-bottom: 0.9rem;
-    }
-
-    .slot-grid { display: grid; gap: 0.75rem; }
-
-    .slot-card {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 1rem;
-      padding: 0.9rem 1.1rem;
-    }
-
-    .slot-date {
-      flex: none;
-      width: 3.4rem;
-      text-align: center;
-      background: var(--surface-alt);
-      border-radius: 0.7rem;
-      padding: 0.4rem 0.2rem;
-    }
-
-    .slot-date .day {
-      display: block;
-      font-family: 'Sora', sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--accent-strong);
-      line-height: 1.1;
-    }
-
-    .slot-date .weekday {
-      display: block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-    }
-
-    .slot-info { flex: 1; min-width: 0; }
-    .slot-time { font-weight: 600; }
-    .slot-month { color: var(--ink-soft); font-size: 0.88rem; }
-
-    .empty {
-      background: var(--surface);
-      border: 1px dashed var(--line);
-      border-radius: 1rem;
-      padding: 2rem;
+    .intro {
+      font-style: italic;
       text-align: center;
       color: var(--ink-soft);
+      max-width: 46ch;
+      margin: 0 auto 2.5rem;
+      font-size: 1.15rem;
+    }
+
+    .week { margin-bottom: 2.5rem; }
+
+    .week-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.9rem;
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+
+    .week-label .rule { flex: 1; max-width: 3.5rem; height: 1px; background: var(--line); }
+
+    .slot-rows { border-top: 1px solid var(--line); }
+
+    .slot-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.95rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .slot-meta { color: var(--ink); }
+    .slot-meta .weekday { color: var(--ink-soft); }
+    .slot-meta .sep { color: var(--ink-faint); margin: 0 0.35em; }
+
+    .request-link {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .request-link:hover { color: var(--accent-strong); }
+
+    .empty {
+      text-align: center;
+      font-style: italic;
+      color: var(--ink-soft);
+      padding: 2rem 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     /* Form card */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 1.2rem;
-      padding: 1.75rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 2rem 0;
     }
 
     .back-link {
       display: inline-block;
       color: var(--ink-soft);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       text-decoration: none;
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.6rem;
     }
+
+    .back-link:hover { color: var(--accent); }
 
     .slot-heading {
-      font-size: 1.4rem;
-      margin-bottom: 1.4rem;
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.6rem;
     }
 
-    form p { margin: 0 0 1.1rem; }
+    form p { margin: 0 0 1.2rem; }
     form p:last-of-type { margin-bottom: 0; }
 
     label {
       display: block;
-      font-weight: 600;
-      font-size: 0.88rem;
-      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.78rem;
+      margin-bottom: 0.4rem;
       color: var(--ink-soft);
     }
 
     input, textarea {
       width: 100%;
-      font-family: 'Work Sans', sans-serif;
-      font-size: 1rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.05rem;
       color: var(--ink);
-      background: var(--bg);
-      border: 1px solid var(--line);
-      border-radius: 0.65rem;
-      padding: 0.6rem 0.75rem;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      padding: 0.45rem 0.1rem;
     }
 
     input:focus, textarea:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-wash);
+      border-bottom-color: var(--accent);
     }
 
-    textarea { resize: vertical; min-height: 4.5rem; }
+    textarea { resize: vertical; min-height: 4rem; }
 
-    .btn-submit {
-      margin-top: 0.4rem;
-      font-family: 'Work Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.95rem;
-      border: 0;
-      border-radius: 999px;
-      padding: 0.7rem 1.6rem;
-      background: var(--accent);
-      color: var(--accent-ink);
-      cursor: pointer;
-    }
+    .btn-submit { margin-top: 0.6rem; }
 
     .field-help {
       display: block;
       color: var(--ink-faint);
-      font-size: 0.78rem;
-      margin-top: 0.3rem;
+      font-size: 0.82rem;
+      margin-top: 0.35rem;
+      font-style: italic;
     }
 
     .auth-switch {
-      margin: 1.1rem 0 0;
-      font-size: 0.88rem;
+      margin: 1.4rem 0 0;
+      text-align: center;
+      font-size: 0.95rem;
       color: var(--ink-soft);
     }
 
     .errorlist {
-      color: var(--accent-strong);
+      color: var(--accent);
       list-style: none;
       padding: 0;
-      margin: 0.3rem 0 0;
-      font-size: 0.85rem;
+      margin: 0.35rem 0 0;
+      font-size: 0.9rem;
+      font-style: italic;
     }
 
     /* Confirmation */
-    .confirm-card {
-      text-align: center;
-      padding: 2.5rem 1.75rem;
-    }
+    .confirm-card { text-align: center; }
 
     .confirm-icon {
-      width: 3.2rem;
-      height: 3.2rem;
-      margin: 0 auto 1.1rem;
-      border-radius: 50%;
-      background: var(--accent-wash);
-      color: var(--accent-strong);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
     }
 
-    .confirm-card p { max-width: 42ch; margin: 0 auto 0.9rem; color: var(--ink-soft); }
-    .confirm-card p:last-of-type { margin-bottom: 1.4rem; }
+    .confirm-card p { max-width: 42ch; margin: 0 auto 1rem; color: var(--ink-soft); }
+    .confirm-card p:last-of-type { margin-bottom: 1.6rem; }
   </style>
 </head>
 <body>
   <header class="site">
-    <a class="brand" href="{% url 'bookings:slot_list' %}">
-      <img class="brand-mark-img" src="{% static 'bookings/reysol-mic.png' %}" alt="">
-      <span class="brand-word">
-        <span class="brand-name">REYSOL</span>
-        <span class="brand-sub">STUDIOS</span>
+    <div class="utility-row">
+      <span class="lang-switch">
+        {% get_current_language as CURRENT_LANGUAGE %}
+        {% for lang_code, lang_name in LANGUAGES %}
+          <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <input type="hidden" name="language" value="{{ lang_code }}">
+            <button type="submit" {% if lang_code == CURRENT_LANGUAGE %}disabled{% endif %}>{{ lang_name }}</button>
+          </form>
+        {% endfor %}
       </span>
-    </a>
-    <span class="auth-links">
-      {% if user.is_authenticated %}
-        <span class="auth-username">{{ user.get_username }}</span>
-        <form action="{% url 'logout' %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="link-btn">{% trans "Log out" %}</button>
-        </form>
-      {% else %}
-        <a href="{% url 'login' %}?next={{ request.path|urlencode }}">{% trans "Log in" %}</a>
-        <a href="{% url 'bookings:signup' %}">{% trans "Sign up" %}</a>
-      {% endif %}
-    </span>
-    <span class="lang-switch">
-      {% get_current_language as CURRENT_LANGUAGE %}
-      {% for lang_code, lang_name in LANGUAGES %}
-        <form action="{% url 'set_language' %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.path }}">
-          <input type="hidden" name="language" value="{{ lang_code }}">
-          <button type="submit" {% if lang_code == CURRENT_LANGUAGE %}disabled{% endif %}>{{ lang_name }}</button>
-        </form>
-      {% endfor %}
-    </span>
+      <span class="auth-links">
+        {% if user.is_authenticated %}
+          <span class="auth-username">{{ user.get_username }}</span>
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="link-btn">{% trans "Log out" %}</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}?next={{ request.path|urlencode }}">{% trans "Log in" %}</a>
+          <a href="{% url 'bookings:signup' %}">{% trans "Sign up" %}</a>
+        {% endif %}
+      </span>
+    </div>
+    <div class="brand-block">
+      <a class="brand" href="{% url 'bookings:slot_list' %}">
+        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+          <rect x="9" y="2" width="6" height="11" rx="3"></rect>
+          <path d="M5 10v1a7 7 0 0 0 14 0v-1"></path>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="8" y1="22" x2="16" y2="22"></line>
+        </svg>
+        <span class="brand-name">REYSOL STUDIOS</span>
+      </a>
+      <div class="brand-rule"></div>
+    </div>
   </header>
+  {% if messages %}
+    <ul class="site-messages">
+      {% for message in messages %}
+        <li class="site-message{% if message.tags %} site-message--{{ message.tags }}{% endif %}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
   {% block content %}{% endblock %}
 </body>
 </html>

@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -63,6 +64,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, _("Account created! Welcome, %(name)s.") % {"name": user.username})
             next_url = request.POST.get("next") or request.GET.get("next") or reverse("bookings:slot_list")
             return redirect(next_url)
     else:
